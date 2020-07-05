@@ -54,6 +54,14 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
+static const char *recompile_dwm[] = { "sudo", "/media/Data/Projects/dwm/recompile_dwm.sh" };
+
+// recompile dwm
+static void recompile(const Arg *arg) {
+	Arg s = {.v = recompile_dwm};
+	execute(&s);
+	quit(arg);
+}
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -91,6 +99,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
+	{ MODKEY|ShiftMask,             XK_c,      recompile,      {0} },
 };
 
 /* button definitions */
