@@ -7,15 +7,17 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Font Awesome 5 Free:size=9", "Font Awesome 5 Brands:size=9" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char *colors[][3]      = {
+
+static const char normbg[]       = "#1d2021";
+static const char normfg[]       = "#d5c4a1";
+static const char normbor[]      = "#d5c4a1";
+static const char selbg[]        = "#504945";
+static const char selfg[]        = "#bdae93";
+static const char selbor[]       = "#bdae93";
+static const char *colors[][3]   = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { normbg, normfg, normbor },
+	[SchemeSel]  = { selbg, selbg,  selbor  },
 };
 
 /* tagging */
