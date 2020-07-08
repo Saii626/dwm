@@ -14,17 +14,17 @@ static const char normbor[]      = "#d5c4a1";
 static const char selbg[]        = "#504945";
 static const char selfg[]        = "#bdae93";
 static const char selbor[]       = "#bdae93";
-static const unsigned int baralpha = 0xd0;
-static const unsigned int borderalpha = OPAQUE;
-static const char *colors[][3]   = {
+
+static const unsigned int baralpha = 0x80;
+static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { normbg, normfg, normbor },
 	[SchemeSel]  = { selbg, selbg,  selbor  },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
-	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeNorm] = { OPAQUE, baralpha, baralpha },
+	[SchemeSel]  = { OPAQUE, baralpha, baralpha },
 };
 
 /* tagging */
