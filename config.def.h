@@ -10,16 +10,16 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Font Awesome 5 Free:size=9", "Font Awesome 5 Brands:size=9" };
 static const char normbg[]       = "#1d2021";
 static const char normfg[]       = "#d5c4a1";
-static const char normbor[]      = "#d5c4a1";
+static const char normbor[]      = "#1d2021";
 static const char selbg[]        = "#504945";
 static const char selfg[]        = "#bdae93";
-static const char selbor[]       = "#bdae93";
+static const char selbor[]       = "#504945";
 
 static const unsigned int baralpha = 0x80;
-static const char *colors[][3]      = {
+static const char *colors[][3]   = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { normbg, normfg, normbor },
-	[SchemeSel]  = { selbg, selbg,  selbor  },
+	[SchemeNorm] = { normfg, normbg, normbor },
+	[SchemeSel]  = { selfg, selbg,  selbor  },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
