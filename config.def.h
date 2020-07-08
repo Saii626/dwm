@@ -10,14 +10,14 @@ static const char dmenufont[]       = "monospace:size=10";
 
 static const char normbg[]       = "#1d2021";
 static const char normfg[]       = "#d5c4a1";
-static const char normbor[]      = "#d5c4a1";
+static const char normbor[]      = "#1d2021";
 static const char selbg[]        = "#504945";
 static const char selfg[]        = "#bdae93";
-static const char selbor[]       = "#bdae93";
+static const char selbor[]       = "#504945";
 static const char *colors[][3]   = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { normbg, normfg, normbor },
-	[SchemeSel]  = { selbg, selbg,  selbor  },
+	[SchemeNorm] = { normfg, normbg, normbor },
+	[SchemeSel]  = { selfg, selbg,  selbor  },
 };
 
 /* tagging */
