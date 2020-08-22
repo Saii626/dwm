@@ -1,7 +1,5 @@
 /* See LICENSE file for copyright and license details. */
 
-#define PORT 5784
-
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */

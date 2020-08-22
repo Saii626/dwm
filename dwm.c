@@ -27,11 +27,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
 #include <sys/wait.h>
 #include <X11/cursorfont.h>
 #include <X11/keysym.h>
@@ -230,7 +227,6 @@ static int updategeom(void);
 static void updatenumlockmask(void);
 static void updatesizehints(Client *c);
 static void updatestatus(void);
-static void setupsocket(void);
 static void updatetitle(Client *c);
 static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
@@ -242,10 +238,6 @@ static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void xinitvisual();
 static void zoom(const Arg *arg);
-
-/* socket variables */
-static int socketfd;
-static struct sockaddr_in serveraddr;
 
 /* variables */
 static const char broken[] = "broken";
@@ -461,35 +453,9 @@ buttonpress(XEvent *e)
 			arg.ui = 1 << i;
 		} else if (ev->x < x + blw)
 			click = ClkLtSymbol;
-		else if (ev->x > (x = selmon->ww - TEXTW(stext))) {
+		else if (ev->x > selmon->ww - TEXTW(stext))
 			click = ClkStatusText;
-
-			char currentStatusBarCopy[256];
-			strcpy(currentStatusBarCopy, stext);
-
-			double approxCharWidth = ((double) TEXTW(stext)) / strlen(stext);
-			int approxCharPos = (int) ((ev->x - x) / approxCharWidth);
-
-			if (approxCharPos < 0) approxCharPos = 0;
-			if (approxCharPos > strlen(stext)) approxCharPos = strlen(stext);
-
-			char tempStr[256];
-			strncpy(tempStr, currentStatusBarCopy, approxCharPos);
-			int diff = ev->x - (x + TEXTW(tempStr));
-
-			int positiveDiff = diff >= 0;
-			while ((positiveDiff && diff >= 0) || (!positiveDiff && diff < 0)) {
-			       approxCharPos += diff >= 0 ? 1 : -1;
-			       strncpy(tempStr, currentStatusBarCopy, approxCharPos);
-			       tempStr[approxCharPos] = '\0';
-			       diff = ev->x - (x + TEXTW(tempStr));
-			}
-
-			char payload[6];
-			sprintf(payload, "%d %d", approxCharPos, ev->button);
-			sendto(socketfd, payload, strlen(payload), 0, (struct sockaddr *) &serveraddr, sizeof(struct sockaddr));
-			perror(" failed");
-		} else
+		else
 			click = ClkWinTitle;
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
@@ -1619,7 +1585,6 @@ setup(void)
 	/* init bars */
 	updatebars();
 	updatestatus();
-	setupsocket();
 	/* supporting window for NetWMCheck */
 	wmcheckwin = XCreateSimpleWindow(dpy, root, 0, 0, 1, 1, 0, 0, 0);
 	XChangeProperty(dpy, wmcheckwin, netatom[NetWMCheck], XA_WINDOW, 32,
@@ -1643,20 +1608,6 @@ setup(void)
 	focus(NULL);
 }
 
-void
-setupsocket()
-{
-       if ( (socketfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) {
-               fprintf(stderr, "socket creation failed");
-       }
-
-       memset(&serveraddr, 0, sizeof(serveraddr));
-
-       // Filling server information
-       serveraddr.sin_family = AF_INET;
-       serveraddr.sin_port = htons(PORT);
-       inet_pton(AF_INET, "127.0.0.1", &(serveraddr.sin_addr));
-}
 
 void
 seturgent(Client *c, int urg)
@@ -1782,10 +1733,6 @@ togglebar(const Arg *arg)
 	updatebarpos(selmon);
 	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
 	arrange(selmon);
-
-	char *payload = selmon->showbar ? "-1" : "-2" ;
-	sendto(socketfd, payload, strlen(payload), 0, (struct sockaddr *) &serveraddr, sizeof(struct sockaddr));
-	perror(" failed");
 }
 
 void
