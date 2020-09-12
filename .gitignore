@@ -1,0 +1,10 @@
+# object files
+*.o
+
+# binaries
+dwm
+
+# default config
+config.def.h
+
+Session.vim
